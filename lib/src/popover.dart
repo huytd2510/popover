@@ -62,7 +62,7 @@ import 'utils/build_context_extension.dart';
 ///
 /// The `constraints` is popover's constraints.
 ///
-void showPopover({
+Future showPopover({
   @required BuildContext context,
   @required WidgetBuilder bodyBuilder,
   PopoverDirection direction = PopoverDirection.bottom,
@@ -96,7 +96,7 @@ void showPopover({
   final offset = BuildContextExtension.getWidgetLocalToGlobal(context);
   final bounds = BuildContextExtension.getWidgetBounds(context);
 
-  showGeneralDialog(
+ return showGeneralDialog(
     context: context,
     pageBuilder: (_, __, ___) {
       return Builder(builder: (_) => const SizedBox.shrink());
@@ -104,6 +104,7 @@ void showPopover({
     barrierDismissible: barrierDismissible,
     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
     barrierColor: barrierColor,
+    useRootNavigator: true,
     transitionDuration: transitionDuration,
     transitionBuilder: (context, animation, _, child) {
       return WillPopScope(
