@@ -1,3 +1,11 @@
+## [0.2.1] - 04.04.2021.
+
+- Lower minimum version requirements for Dart and Flutter to pass pub.dev validation.
+
+## [0.2.0] - 04.04.2021.
+
+- Migrate to NNBD.
+
 ## [0.1.0] - 09.02.2021.
 
 - **BREAKING**: Refactor popover implementation to have identical API to included in Flutter modal dialogs e.g. `showCupertinoDialog`
