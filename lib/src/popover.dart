@@ -62,15 +62,9 @@ import 'utils/build_context_extension.dart';
 ///
 /// The `constraints` is popover's constraints.
 ///
-<<<<<<< HEAD
 Future showPopover({
   @required BuildContext context,
   @required WidgetBuilder bodyBuilder,
-=======
-void showPopover({
-  required BuildContext context,
-  required WidgetBuilder bodyBuilder,
->>>>>>> upstream/main
   PopoverDirection direction = PopoverDirection.bottom,
   Color backgroundColor = Colors.white,
   Color barrierColor = Colors.black45,
