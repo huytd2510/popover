@@ -73,9 +73,10 @@ Future showPopover({
   List<BoxShadow> shadow = const [
     BoxShadow(color: Colors.black12, blurRadius: 5)
   ],
-  double arrowWidth = 24,
-  double arrowHeight = 12,
+  double arrowWidth = 0,
+  double arrowHeight = 0,
   double arrowDxOffset = 0,
+  double marginRight = 0,
   double arrowDyOffset = 0,
   double contentDyOffset = 0,
   bool barrierDismissible = true,
@@ -89,8 +90,6 @@ Future showPopover({
       ? constraints?.tighten(width: width, height: height) ??
           BoxConstraints.tightFor(width: width, height: height)
       : constraints;
-
-  final offset = BuildContextExtension.getWidgetLocalToGlobal(context);
   final bounds = BuildContextExtension.getWidgetBounds(context);
 
  return showGeneralDialog(
@@ -121,8 +120,8 @@ Future showPopover({
           child: PopoverItem(
             key: key,
             attachRect: Rect.fromLTWH(
-              offset.dx + arrowDxOffset,
-              offset.dy + arrowDyOffset,
+              arrowDxOffset,
+              arrowDyOffset,
               bounds.width,
               bounds.height + contentDyOffset,
             ),
@@ -135,7 +134,8 @@ Future showPopover({
             direction: direction,
             arrowWidth: arrowWidth,
             arrowHeight: arrowHeight,
-          ),
+            marginRight: marginRight
+          )
         ),
       );
     },

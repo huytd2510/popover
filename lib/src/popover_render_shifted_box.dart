@@ -1,4 +1,5 @@
 import 'package:flutter/rendering.dart';
+import 'package:flutter_screen_scaling/flutter_screen_scaling.dart';
 
 import 'popover_direction.dart';
 import 'popover_path.dart';
@@ -92,25 +93,20 @@ class PopoverRenderShiftedBox extends RenderShiftedBox {
     bodyRect = childParentData.offset & child!.size;
 
     final arrowLeft =
-        attachRect!.left + attachRect!.width / 2 - arrowWidth! / 2 - offset.dx;
+        attachRect!.left;
 
     final arrowTop =
-        attachRect!.top + attachRect!.height / 2 - arrowWidth! / 2 - offset.dy;
+        attachRect!.top;
 
     switch (_direction) {
       case PopoverDirection.top:
-        arrowRect = Rect.fromLTWH(
-          arrowLeft,
-          child!.size.height,
-          arrowWidth!,
-          arrowHeight!,
-        );
+        arrowRect = Rect.fromLTRB(arrowLeft, child!.size.height, ScreenScale.convertWidth(145), arrowHeight!);
 
         translation = Offset(arrowLeft + arrowWidth! / 2, size.height);
         break;
       case PopoverDirection.bottom:
-        arrowRect = Rect.fromLTWH(arrowLeft, 0, arrowWidth!, arrowHeight!);
-        translation = Offset(arrowLeft + arrowWidth! / 2, 0);
+        arrowRect = Rect.fromLTRB(arrowLeft, 0, ScreenScale.convertWidth(145), arrowHeight!);
+        translation = Offset(arrowLeft, 0);
         break;
       case PopoverDirection.left:
         arrowRect = Rect.fromLTWH(
@@ -128,10 +124,6 @@ class PopoverRenderShiftedBox extends RenderShiftedBox {
         break;
       default:
     }
-
-    _transform(transform, translation);
-
-    _paintShadows(context, transform, offset, _direction, arrowRect, bodyRect);
 
     _pushClipPath(
       context,
@@ -153,20 +145,7 @@ class PopoverRenderShiftedBox extends RenderShiftedBox {
     Path path,
     Matrix4 transform,
   ) {
-    context.pushClipPath(needsCompositing, offset, offset & size, path, (
-      context,
-      offset,
-    ) {
-      context.pushTransform(needsCompositing, offset, transform, (
-        context,
-        offset,
-      ) {
-        final backgroundPaint = Paint();
-        backgroundPaint.color = color!;
-        context.canvas.drawRect(offset & size, backgroundPaint);
-        super.paint(context, offset);
-      });
-    });
+    super.paint(context, offset);
   }
 
   @override
@@ -217,39 +196,6 @@ class PopoverRenderShiftedBox extends RenderShiftedBox {
       childParentData!.offset = Offset(0, arrowHeight!);
     } else if (_direction == PopoverDirection.right) {
       childParentData!.offset = Offset(arrowHeight!, 0);
-    }
-  }
-
-  void _paintShadows(
-    PaintingContext context,
-    Matrix4 transform,
-    Offset offset,
-    PopoverDirection direction,
-    Rect? arrowRect,
-    Rect bodyRect,
-  ) {
-    if (boxShadow == null) return;
-    for (final boxShadow in boxShadow!) {
-      final paint = boxShadow.toPaint();
-
-      arrowRect = arrowRect!
-          .shift(offset)
-          .shift(boxShadow.offset)
-          .inflate(boxShadow.spreadRadius);
-
-      bodyRect = bodyRect
-          .shift(offset)
-          .shift(boxShadow.offset)
-          .inflate(boxShadow.spreadRadius);
-
-      final path = PopoverPath(radius!).draw(_direction, arrowRect, bodyRect);
-
-      context.pushTransform(needsCompositing, offset, transform, (
-        context,
-        offset,
-      ) {
-        context.canvas.drawPath(path, paint);
-      });
     }
   }
 }

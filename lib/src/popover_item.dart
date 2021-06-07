@@ -16,6 +16,7 @@ class PopoverItem extends StatefulWidget {
   final double? arrowWidth;
   final double? arrowHeight;
   final BoxConstraints? constraints;
+  final double? marginRight;
 
   const PopoverItem({
     required this.attachRect,
@@ -28,6 +29,7 @@ class PopoverItem extends StatefulWidget {
     this.arrowWidth,
     this.arrowHeight,
     this.constraints,
+    this.marginRight,
     Key? key,
   }) : super(key: key);
 
@@ -39,31 +41,34 @@ class _PopoverItemState extends State<PopoverItem> {
   BoxConstraints? constraints;
 
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        PopoverPositionWidget(
-          attachRect: widget.attachRect,
-          scale: widget.animation,
-          constraints: constraints,
-          direction: widget.direction,
-          arrowHeight: widget.arrowHeight,
-          child: PopoverContext(
+    return
+      Stack(
+        children: [
+          PopoverPositionWidget(
             attachRect: widget.attachRect,
-            animation: widget.animation,
-            radius: widget.radius,
-            backgroundColor: widget.backgroundColor,
-            boxShadow: widget.boxShadow,
+            scale: widget.animation,
+            constraints: constraints,
             direction: widget.direction,
-            arrowWidth: widget.arrowWidth,
             arrowHeight: widget.arrowHeight,
-            child: Material(
-              type: MaterialType.transparency,
-              child: widget.child,
+            marginRight: widget.marginRight,
+            child: PopoverContext(
+              attachRect: widget.attachRect,
+              animation: widget.animation,
+              radius: widget.radius,
+              backgroundColor: widget.backgroundColor,
+              boxShadow: widget.boxShadow,
+              direction: widget.direction,
+              arrowWidth: widget.arrowWidth,
+              arrowHeight: widget.arrowHeight,
+              child: Material(
+                type: MaterialType.transparency,
+                child: widget.child,
+              ),
             ),
-          ),
-        )
-      ],
-    );
+          )
+        ],
+      );
+
   }
 
   @override

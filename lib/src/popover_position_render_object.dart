@@ -1,4 +1,5 @@
 import 'package:flutter/rendering.dart';
+import 'package:flutter_screen_scaling/flutter_screen_scaling.dart';
 
 import 'popover_direction.dart';
 import 'utils/popover_utils.dart';
@@ -9,6 +10,7 @@ class PopoverPositionRenderObject extends RenderShiftedBox {
   Rect? _attachRect;
   BoxConstraints? _additionalConstraints;
   double? arrowHeight;
+  double? _marginRight;
 
   PopoverPositionRenderObject({
     required this.arrowHeight,
@@ -16,10 +18,12 @@ class PopoverPositionRenderObject extends RenderShiftedBox {
     Rect? attachRect,
     BoxConstraints? constraints,
     PopoverDirection? direction,
+    double? marginRight,
   }) : super(child) {
     _attachRect = attachRect;
     _additionalConstraints = constraints;
     _direction = direction;
+    _marginRight = marginRight;
   }
 
   BoxConstraints? get additionalConstraints => _additionalConstraints;
@@ -96,15 +100,7 @@ class PopoverPositionRenderObject extends RenderShiftedBox {
 
   double _horizontalOffset(Size size) {
     var offset = 0.0;
-
-    if (attachRect!.left > size.width / 2 &&
-        Utils().screenWidth - attachRect!.right > size.width / 2) {
-      offset = attachRect!.left + attachRect!.width / 2 - size.width / 2;
-    } else if (attachRect!.left < size.width / 2) {
-      offset = 10;
-    } else {
-      offset = Utils().screenWidth - 10 - size.width;
-    }
+      offset = Utils().screenWidth - size.width - (_marginRight ?? 0);
     return offset;
   }
 
